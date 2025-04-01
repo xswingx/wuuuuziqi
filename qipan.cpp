@@ -160,77 +160,26 @@ void QiPan::mousePressEvent(QMouseEvent *event)
 /*判断用户是否获胜*/
 bool QiPan::isCheckWin(int row,int col,ROLE role)
 {
-    int cnt1 = 1,cnt2 = 1,cnt3 = 1,cnt4 = 1;
-    for(int i=row+1;i<m_boardSize;i++){
-        if(m_board[i][col]==role){
-            cnt1++;
-        }else{
-            break;
+    int dxy[4][2] = {{0,1},{1,0},{1,1},{1,-1}};
+    for(int i=0;i<4;i++){
+        int cnt = 1;
+        for(int j=1;;j++){
+            if(row+j*dxy[i][0] < m_boardSize&&col+j*dxy[i][1] < m_boardSize&&row+j*dxy[i][0] >= 0&&col+j*dxy[i][1] >= 0&&m_board[row+j*dxy[i][0]][col+j*dxy[i][1]] == role){
+                cnt++;
+            }else{
+                break;
+            }
         }
-    }
-    for(int i=row-1;i>=0;i--){
-        if(m_board[i][col]==role){
-            cnt1++;
-        }else{
-            break;
+        for(int j=1;;j++){
+            if(row-j*dxy[i][0] < m_boardSize&&col-j*dxy[i][1] < m_boardSize&&row-j*dxy[i][0] >= 0&&col-j*dxy[i][1] >= 0&&m_board[row-j*dxy[i][0]][col-j*dxy[i][1]] == role){
+                cnt++;
+            }else{
+                break;
+            }
         }
-    }
-    if(cnt1>=5){
-        return true;
-    }
-
-    for(int i=col+1;i<m_boardSize;i++){
-        if(m_board[row][i]==role){
-            cnt2++;
-        }else{
-            break;
+        if(cnt>=5){
+            return true;
         }
-    }
-    for(int i=col-1;i>=0;i--){
-        if(m_board[row][i]==role){
-            cnt2++;
-        }else{
-            break;
-        }
-    }
-    if(cnt2>=5){
-        return true;
-    }
-
-    for(int i=1;row+i<m_boardSize&&col+i<m_boardSize;i++){
-        if(m_board[row+i][col+i]==role){
-            cnt3++;
-        }else{
-            break;
-        }
-    }
-    for(int i=1;row-i>=0&&col-i>=0;i++){
-        if(m_board[row-i][col-i]==role){
-            cnt3++;
-        }else{
-            break;
-        }
-    }
-    if(cnt3>=5){
-        return true;
-    }
-
-    for(int i=1;row+i<m_boardSize&&col-i>=0;i++){
-        if(m_board[row+i][col-i]==role){
-            cnt4++;
-        }else{
-            break;
-        }
-    }
-    for(int i=1;row-i>=0&&col+i<m_boardSize;i++){
-        if(m_board[row-i][col+i]==role){
-            cnt4++;
-        }else{
-            break;
-        }
-    }
-    if(cnt4>=5){
-        return true;
     }
     return false;
 }
